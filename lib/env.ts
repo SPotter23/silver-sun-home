@@ -48,6 +48,20 @@ function validateEnv(): EnvConfig {
   }
 
   if (errors.length > 0) {
+    // During build time, just log warnings instead of throwing
+    if (process.env.NEXT_PHASE === 'phase-production-build') {
+      console.warn('⚠️  Environment variables not set (will be required at runtime):')
+      errors.forEach(e => console.warn(`   - ${e}`))
+      // Return empty config for build time
+      return {
+        NEXT_PUBLIC_SUPABASE_URL: supabaseUrl || '',
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: supabaseAnonKey || '',
+        HA_BASE_URL: haBaseUrl || '',
+        HA_TOKEN: haToken || '',
+      }
+    }
+
+    // At runtime, throw error
     throw new Error(
       `Environment validation failed:\n${errors.map(e => `  - ${e}`).join('\n')}\n\n` +
       `Please check your .env.local file and ensure all required variables are set.`
