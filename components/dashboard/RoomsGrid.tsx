@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { Sofa, UtensilsCrossed, Bed, Bath, Users, Home, Briefcase, Lightbulb } from 'lucide-react'
 
 interface Room {
@@ -78,15 +79,7 @@ const rooms: Room[] = [
   }
 ]
 
-interface RoomsGridProps {
-  onRoomSelect?: (roomId: string) => void
-}
-
-export function RoomsGrid({ onRoomSelect }: RoomsGridProps) {
-  const handleRoomClick = (roomId: string) => {
-    onRoomSelect?.(roomId)
-  }
-
+export function RoomsGrid() {
   return (
     <div className="space-y-3">
       <h2 className="text-lg font-semibold text-white">Rooms</h2>
@@ -96,10 +89,10 @@ export function RoomsGrid({ onRoomSelect }: RoomsGridProps) {
           const hasActiveDevices = room.devicesOn > 0
 
           return (
-            <button
+            <Link
               key={room.id}
-              onClick={() => handleRoomClick(room.id)}
-              className={`group relative overflow-hidden rounded-2xl p-4 transition-all hover:scale-[1.02] border ${
+              href={`/rooms/${room.id}`}
+              className={`group relative overflow-hidden rounded-2xl p-4 transition-all hover:scale-[1.02] border block ${
                 hasActiveDevices
                   ? 'bg-gradient-to-br from-blue-600 to-blue-700 border-blue-500/50'
                   : 'bg-gray-800 border-gray-700 hover:border-gray-600'
@@ -148,7 +141,7 @@ export function RoomsGrid({ onRoomSelect }: RoomsGridProps) {
                   </div>
                 )}
               </div>
-            </button>
+            </Link>
           )
         })}
       </div>

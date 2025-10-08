@@ -21,10 +21,6 @@ export default function DashboardPage() {
     console.log('Theme selected:', themeId)
   }
 
-  const handleRoomSelect = (roomId: string) => {
-    console.log('Room selected:', roomId)
-  }
-
   const handleControlClick = (controlId: string) => {
     console.log('Control clicked:', controlId)
   }
@@ -58,7 +54,7 @@ export default function DashboardPage() {
           />
 
           {/* Rooms Grid */}
-          <RoomsGrid onRoomSelect={handleRoomSelect} />
+          <RoomsGrid />
 
           {/* Pool/Spa Card */}
           <PoolSpaCard
