@@ -1,6 +1,6 @@
 'use client'
 
-import { Thermometer, Blinds, Wind, Waves } from 'lucide-react'
+import { Thermometer, Blinds, Waves } from 'lucide-react'
 
 interface QuickControl {
   id: string
@@ -24,13 +24,6 @@ const controls: QuickControl[] = [
     icon: <Blinds className="w-5 h-5" />,
     value: '50%',
     status: 'inactive'
-  },
-  {
-    id: 'sauna',
-    name: 'Sauna',
-    icon: <Wind className="w-5 h-5" />,
-    value: '175°F',
-    status: 'warning'
   },
   {
     id: 'pool',
@@ -72,7 +65,7 @@ export function QuickControls({ onControlClick }: QuickControlsProps) {
     <div className="space-y-3">
       <h2 className="text-lg font-semibold text-white">Quick Controls</h2>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div className="grid grid-cols-3 gap-3">
         {controls.map((control) => (
           <button
             key={control.id}
