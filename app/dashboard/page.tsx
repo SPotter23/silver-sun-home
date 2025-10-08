@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { Header } from '@/components/dashboard/Header'
 import { ThemesCarousel } from '@/components/dashboard/ThemesCarousel'
 import { RoomsGrid } from '@/components/dashboard/RoomsGrid'
