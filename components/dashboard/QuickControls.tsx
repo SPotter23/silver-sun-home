@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Thermometer, Blinds, Waves } from 'lucide-react'
+import { Thermometer, Blinds } from 'lucide-react'
 
 interface QuickControl {
   id: string
@@ -25,13 +25,6 @@ const controls: QuickControl[] = [
     icon: <Blinds className="w-5 h-5" />,
     value: '50%',
     status: 'inactive'
-  },
-  {
-    id: 'pool',
-    name: 'Pool',
-    icon: <Waves className="w-5 h-5" />,
-    value: '78°F',
-    status: 'active'
   }
 ]
 
@@ -62,7 +55,7 @@ export function QuickControls() {
     <div className="space-y-3">
       <h2 className="text-lg font-semibold text-white">Quick Controls</h2>
 
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-2 gap-3">
         {controls.map((control) => {
           const Component = control.id === 'thermostat' ? Link : 'button'
           const props = control.id === 'thermostat'
