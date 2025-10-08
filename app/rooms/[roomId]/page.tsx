@@ -34,6 +34,9 @@ export default function RoomPage() {
     setBlindsPosition(prev => Math.max(0, Math.min(100, prev + delta)))
   }
 
+  // Master Bathroom only has blinds controls
+  const isMasterBathroom = roomId === 'master-bathroom'
+
   return (
     <main className="min-h-screen bg-gray-950 pb-24">
       <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
@@ -48,8 +51,9 @@ export default function RoomPage() {
           <h1 className="text-2xl font-bold text-white">{roomName}</h1>
         </div>
 
-        {/* Temperature Control Card */}
-        <div className="bg-gradient-to-br from-orange-600 to-red-600 rounded-2xl p-6 shadow-xl border border-orange-500/30">
+        {/* Temperature Control Card - Not shown for Master Bathroom */}
+        {!isMasterBathroom && (
+          <div className="bg-gradient-to-br from-orange-600 to-red-600 rounded-2xl p-6 shadow-xl border border-orange-500/30">
           <div className="space-y-4">
             {/* Header */}
             <div className="flex items-center gap-3">
@@ -111,6 +115,7 @@ export default function RoomPage() {
             </div>
           </div>
         </div>
+        )}
 
         {/* Blinds Control Card */}
         <div className="bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl p-6 shadow-xl border border-blue-500/30">
