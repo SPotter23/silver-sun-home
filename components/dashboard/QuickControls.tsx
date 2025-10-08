@@ -57,10 +57,17 @@ export function QuickControls() {
 
       <div className="grid grid-cols-2 gap-3">
         {controls.map((control) => {
-          const Component = control.id === 'thermostat' ? Link : 'button'
-          const props = control.id === 'thermostat'
-            ? { href: '/thermostats' }
-            : { onClick: () => console.log(`${control.id} clicked`) }
+          const isLink = control.id === 'thermostat' || control.id === 'blinds'
+          const Component = isLink ? Link : 'button'
+
+          let props: any
+          if (control.id === 'thermostat') {
+            props = { href: '/thermostats' }
+          } else if (control.id === 'blinds') {
+            props = { href: '/blinds' }
+          } else {
+            props = { onClick: () => console.log(`${control.id} clicked`) }
+          }
 
           return (
             <Component
