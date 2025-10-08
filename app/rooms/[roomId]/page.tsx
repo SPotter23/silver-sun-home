@@ -40,7 +40,7 @@ export default function RoomPage() {
   }
 
   // Rooms with only blinds controls (no temperature control)
-  const isBlindsOnly = ['master-bathroom', 'guest-room-1', 'guest-room-2'].includes(roomId)
+  const isBlindsOnly = ['master-bathroom', 'guest-room-1', 'guest-room-2', 'kitchen'].includes(roomId)
 
   // Rooms with 2 blinds
   const hasTwoBlinds = ['kitchen', 'office', 'living-room', 'master-bathroom', 'master-bedroom', 'casita'].includes(roomId)
