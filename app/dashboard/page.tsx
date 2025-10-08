@@ -53,6 +53,8 @@ export default function DashboardPage() {
           {/* Rooms Grid */}
           <RoomsGrid />
 
+          <div className="pt-2" />
+
           {/* Pool/Spa Card - Click to view details */}
           <Link href="/pool">
             <PoolSpaCard
