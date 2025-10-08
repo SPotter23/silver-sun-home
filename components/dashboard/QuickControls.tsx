@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { Thermometer, Blinds, Waves } from 'lucide-react'
 
 interface QuickControl {
@@ -34,11 +35,7 @@ const controls: QuickControl[] = [
   }
 ]
 
-interface QuickControlsProps {
-  onControlClick?: (controlId: string) => void
-}
-
-export function QuickControls({ onControlClick }: QuickControlsProps) {
+export function QuickControls() {
   const getStatusColor = (status: QuickControl['status']) => {
     switch (status) {
       case 'active':
@@ -66,12 +63,18 @@ export function QuickControls({ onControlClick }: QuickControlsProps) {
       <h2 className="text-lg font-semibold text-white">Quick Controls</h2>
 
       <div className="grid grid-cols-3 gap-3">
-        {controls.map((control) => (
-          <button
-            key={control.id}
-            onClick={() => onControlClick?.(control.id)}
-            className={`group relative overflow-hidden rounded-xl p-4 transition-all hover:scale-[1.02] bg-gradient-to-br border ${getStatusColor(control.status)}`}
-          >
+        {controls.map((control) => {
+          const Component = control.id === 'thermostat' ? Link : 'button'
+          const props = control.id === 'thermostat'
+            ? { href: '/thermostats' }
+            : { onClick: () => console.log(`${control.id} clicked`) }
+
+          return (
+            <Component
+              key={control.id}
+              {...props}
+              className={`group relative overflow-hidden rounded-xl p-4 transition-all hover:scale-[1.02] bg-gradient-to-br border block ${getStatusColor(control.status)}`}
+            >
             {/* Background pattern */}
             <div className="absolute inset-0 opacity-5">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(255,255,255,0.1),transparent)]" />
@@ -103,8 +106,9 @@ export function QuickControls({ onControlClick }: QuickControlsProps) {
                 </p>
               </div>
             </div>
-          </button>
-        ))}
+          </Component>
+          )
+        })}
       </div>
     </div>
   )

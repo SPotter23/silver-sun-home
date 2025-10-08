@@ -21,10 +21,6 @@ export default function DashboardPage() {
     console.log('Theme selected:', themeId)
   }
 
-  const handleControlClick = (controlId: string) => {
-    console.log('Control clicked:', controlId)
-  }
-
   const handleActionClick = (actionId: string) => {
     console.log('Action clicked:', actionId)
   }
@@ -70,7 +66,7 @@ export default function DashboardPage() {
           />
 
           {/* Quick Controls */}
-          <QuickControls onControlClick={handleControlClick} />
+          <QuickControls />
 
           {/* Quick Actions */}
           <QuickActions onActionClick={handleActionClick} />
