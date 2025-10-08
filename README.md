@@ -2,6 +2,29 @@
 
 A production-ready Next.js application for controlling Home Assistant devices with Supabase authentication.
 
+## ✨ Highlights
+
+- 🔐 **Secure by Design** - OAuth 2.0, rate limiting, input validation, security headers
+- ⚡ **Real-Time Updates** - WebSocket → SSE streaming (<1s latency)
+- 🎨 **Modern UI** - Dark theme, animations, mobile-optimized
+- 📊 **Production Ready** - Monitoring, health checks, error boundaries
+- 🧪 **Well Tested** - E2E tests, type-safe, git hooks
+
+## Quick Start
+
+```bash
+# Install dependencies
+npm install
+
+# Create .env.local with your credentials
+cp .env.example .env.local
+
+# Run development server
+npm run dev
+```
+
+Visit [http://localhost:3000](http://localhost:3000)
+
 ## Features
 
 ### Core Functionality
@@ -31,6 +54,31 @@ A production-ready Next.js application for controlling Home Assistant devices wi
 - **Git Hooks**: Pre-commit linting, pre-push type checking with Husky
 - **Performance Monitoring**: Web Vitals tracking and API metrics endpoint
 - **Health Checks**: `/api/health` endpoint for uptime monitoring
+
+## Tech Stack
+
+### Frontend
+- **Next.js 14** - React framework with App Router
+- **TypeScript** - Type-safe development
+- **Tailwind CSS** - Utility-first styling
+- **React Hooks** - State management
+
+### Backend
+- **Next.js API Routes** - Serverless functions
+- **WebSocket Client** - HA real-time connection
+- **Server-Sent Events** - Browser streaming
+
+### Infrastructure
+- **Supabase** - Authentication & OAuth
+- **Vercel** - Hosting & deployment
+- **Home Assistant** - Smart home platform
+
+### Developer Tools
+- **Playwright** - E2E testing
+- **ESLint** - Code linting
+- **Prettier** - Code formatting
+- **Husky** - Git hooks
+- **TypeScript Strict** - Type checking
 
 ## Prerequisites
 
@@ -198,22 +246,47 @@ Automatic quality checks run via Husky:
 ### API Endpoints
 
 #### Public Endpoints
-- `GET /api/health` - Health check (HA + Supabase connectivity)
-- `GET /api/metrics` - Performance metrics (API timings, error rates)
+- `GET /api/health` - Health check (HA + Supabase connectivity, rate limit: 10/min)
 
 #### Authenticated Endpoints
 - `GET /api/ha/entities` - Fetch all HA entities (rate limit: 60/min)
 - `POST /api/ha/call_service` - Call HA service (rate limit: 30/min)
+- `GET /api/ha/stream` - Real-time SSE updates (no rate limit, one connection per user)
+- `GET /api/metrics` - Performance metrics (requires auth)
+- `DELETE /api/metrics` - Reset metrics (requires auth)
+
+### Real-Time Updates
+
+The application uses Server-Sent Events (SSE) for real-time updates:
+
+```typescript
+// Architecture: HA WebSocket → Server → SSE → Browser
+- Server maintains single WebSocket connection to Home Assistant
+- Clients connect via SSE for instant state updates
+- Sub-second latency for entity state changes
+- Automatic reconnection with exponential backoff
+```
+
+**Usage:**
+- Click "Real-time" button to enable/disable
+- Green indicator with pulsing dot when connected
+- Falls back to polling if real-time unavailable
+
+**See:** [`REALTIME.md`](./REALTIME.md) for complete architecture details
 
 ### Performance Monitoring
 
-Access real-time metrics at `/api/metrics`:
+Access metrics at `/api/metrics` (requires authentication):
 ```json
 {
-  "apiCalls": {
-    "ha_entities": { "count": 45, "avgDuration": 120, "errorRate": 0 }
-  },
-  "uptime": 3600
+  "uptime": 3600,
+  "endpoints": {
+    "entities": {
+      "calls": 45,
+      "avgResponseTime": 120,
+      "errorRate": 0
+    }
+  }
 }
 ```
 
@@ -223,6 +296,10 @@ Key constants in `lib/constants.ts`:
 - `GRID_COLUMNS`: Grid columns for entity cards
 - `RATE_LIMITS`: Per-endpoint rate limit configs
 - `CACHE_TTL`: Cache expiration times
+
+### Security
+
+See [`SECURITY.md`](./SECURITY.md) for comprehensive security review and audit report.
 
 ## License
 
