@@ -1,13 +1,9 @@
 'use client'
 
-import { use } from 'react'
 import { useState } from 'react'
+import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { ChevronLeft, Thermometer, Blinds, Plus, Minus } from 'lucide-react'
-
-interface RoomPageProps {
-  params: Promise<{ roomId: string }>
-}
 
 const roomNames: Record<string, string> = {
   'master-bedroom': 'Master Bedroom',
@@ -20,8 +16,9 @@ const roomNames: Record<string, string> = {
   'office': 'Office'
 }
 
-export default function RoomPage({ params }: RoomPageProps) {
-  const { roomId } = use(params)
+export default function RoomPage() {
+  const params = useParams()
+  const roomId = params.roomId as string
   const roomName = roomNames[roomId] || 'Room'
 
   const [temperature, setTemperature] = useState(68)
