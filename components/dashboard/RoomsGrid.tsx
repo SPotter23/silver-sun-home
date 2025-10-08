@@ -1,6 +1,6 @@
 'use client'
 
-import { Sofa, UtensilsCrossed, Bed, Users, Trees, Lightbulb } from 'lucide-react'
+import { Sofa, UtensilsCrossed, Bed, Bath, Users, Home, Briefcase, Lightbulb } from 'lucide-react'
 
 interface Room {
   id: string
@@ -13,8 +13,48 @@ interface Room {
 
 const rooms: Room[] = [
   {
-    id: 'living',
-    name: 'Living',
+    id: 'master-bedroom',
+    name: 'Master Bedroom',
+    icon: <Bed className="w-6 h-6" />,
+    devicesOn: 2,
+    totalDevices: 6,
+    temperature: 68
+  },
+  {
+    id: 'master-bathroom',
+    name: 'Master Bathroom',
+    icon: <Bath className="w-6 h-6" />,
+    devicesOn: 1,
+    totalDevices: 4,
+    temperature: 70
+  },
+  {
+    id: 'guest-room-1',
+    name: 'Guest Room 1',
+    icon: <Users className="w-6 h-6" />,
+    devicesOn: 0,
+    totalDevices: 4,
+    temperature: 71
+  },
+  {
+    id: 'guest-room-2',
+    name: 'Guest Room 2',
+    icon: <Users className="w-6 h-6" />,
+    devicesOn: 0,
+    totalDevices: 4,
+    temperature: 71
+  },
+  {
+    id: 'casita',
+    name: 'Casita',
+    icon: <Home className="w-6 h-6" />,
+    devicesOn: 0,
+    totalDevices: 8,
+    temperature: 72
+  },
+  {
+    id: 'living-room',
+    name: 'Living Room',
     icon: <Sofa className="w-6 h-6" />,
     devicesOn: 3,
     totalDevices: 8,
@@ -29,28 +69,12 @@ const rooms: Room[] = [
     temperature: 71
   },
   {
-    id: 'primary',
-    name: 'Primary',
-    icon: <Bed className="w-6 h-6" />,
+    id: 'office',
+    name: 'Office',
+    icon: <Briefcase className="w-6 h-6" />,
     devicesOn: 1,
-    totalDevices: 6,
-    temperature: 68
-  },
-  {
-    id: 'guest',
-    name: 'Guest',
-    icon: <Users className="w-6 h-6" />,
-    devicesOn: 0,
-    totalDevices: 4,
+    totalDevices: 5,
     temperature: 70
-  },
-  {
-    id: 'outdoor',
-    name: 'Outdoor',
-    icon: <Trees className="w-6 h-6" />,
-    devicesOn: 4,
-    totalDevices: 12,
-    temperature: 78
   }
 ]
 
@@ -67,7 +91,7 @@ export function RoomsGrid({ onRoomSelect }: RoomsGridProps) {
     <div className="space-y-3">
       <h2 className="text-lg font-semibold text-white">Rooms</h2>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
         {rooms.map((room) => {
           const hasActiveDevices = room.devicesOn > 0
 
