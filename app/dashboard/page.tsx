@@ -46,6 +46,9 @@ export default function DashboardPage() {
             location="Silver Sun Home"
             weatherTemp={75}
             weatherCondition="sunny"
+            forecastHigh={82}
+            forecastLow={68}
+            uvIndex={7}
           />
 
           {/* Themes Carousel */}
