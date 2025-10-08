@@ -5,7 +5,6 @@ import { Header } from '@/components/dashboard/Header'
 import { ThemesCarousel } from '@/components/dashboard/ThemesCarousel'
 import { RoomsGrid } from '@/components/dashboard/RoomsGrid'
 import { PoolSpaCard } from '@/components/dashboard/PoolSpaCard'
-import { SaunaCard } from '@/components/dashboard/SaunaCard'
 import { QuickControls } from '@/components/dashboard/QuickControls'
 import { QuickActions } from '@/components/dashboard/QuickActions'
 import { BottomNavigation } from '@/components/dashboard/BottomNavigation'
@@ -16,8 +15,6 @@ export default function DashboardPage() {
   const [poolLights, setPoolLights] = useState(false)
   const [spaLights, setSpaLights] = useState(true)
   const [heaterMode, setHeaterMode] = useState<'off' | 'auto' | 'on'>('auto')
-  const [saunaRunning, setSaunaRunning] = useState(false)
-  const [saunaPreset, setSaunaPreset] = useState<'recovery' | 'gentle' | 'intense'>('recovery')
 
   const handleThemeSelect = (themeId: string) => {
     setActiveTheme(themeId)
@@ -60,31 +57,18 @@ export default function DashboardPage() {
           {/* Rooms Grid */}
           <RoomsGrid onRoomSelect={handleRoomSelect} />
 
-          {/* Pool/Spa & Sauna Cards */}
-          <div className="grid md:grid-cols-2 gap-6">
-            <PoolSpaCard
-              poolTemp={78}
-              spaTemp={99}
-              poolLightsOn={poolLights}
-              spaLightsOn={spaLights}
-              heaterMode={heaterMode}
-              onPoolLightsToggle={() => setPoolLights(!poolLights)}
-              onSpaLightsToggle={() => setSpaLights(!spaLights)}
-              onHeaterModeChange={setHeaterMode}
-              onBoost={handleBoost}
-            />
-
-            <SaunaCard
-              temperature={175}
-              targetTemp={180}
-              isRunning={saunaRunning}
-              timeRemaining={20}
-              preset={saunaPreset}
-              onStart={() => setSaunaRunning(true)}
-              onStop={() => setSaunaRunning(false)}
-              onPresetChange={setSaunaPreset}
-            />
-          </div>
+          {/* Pool/Spa Card */}
+          <PoolSpaCard
+            poolTemp={78}
+            spaTemp={99}
+            poolLightsOn={poolLights}
+            spaLightsOn={spaLights}
+            heaterMode={heaterMode}
+            onPoolLightsToggle={() => setPoolLights(!poolLights)}
+            onSpaLightsToggle={() => setSpaLights(!spaLights)}
+            onHeaterModeChange={setHeaterMode}
+            onBoost={handleBoost}
+          />
 
           {/* Quick Controls */}
           <QuickControls onControlClick={handleControlClick} />
