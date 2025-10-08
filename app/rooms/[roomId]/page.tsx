@@ -43,7 +43,7 @@ export default function RoomPage() {
   const isBlindsOnly = ['master-bathroom', 'guest-room-1', 'guest-room-2'].includes(roomId)
 
   // Rooms with 2 blinds
-  const hasTwoBlinds = ['kitchen', 'office'].includes(roomId)
+  const hasTwoBlinds = ['kitchen', 'office', 'living-room'].includes(roomId)
 
   return (
     <main className="min-h-screen bg-gray-950 pb-24">
