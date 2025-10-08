@@ -9,7 +9,8 @@ A production-ready Next.js application for controlling Home Assistant devices wi
 - **Home Assistant Integration**: Server-side API proxy keeps HA tokens secure
 - **Device Control**: View and toggle lights/switches with optimistic UI updates
 - **Search & Filter**: Full-text search, domain filtering, and grouping by device type
-- **Real-time Updates**: Auto-refresh toggle with 30-second intervals
+- **Real-time Updates**: WebSocket → SSE streaming for instant state changes (no polling!)
+- **Polling Fallback**: Optional 30-second polling when real-time is disabled
 
 ### User Experience
 - **Modern UI**: Dark theme with smooth animations and transitions
@@ -89,7 +90,8 @@ Visit [http://localhost:3000](http://localhost:3000)
 │   ├── api/
 │   │   ├── ha/
 │   │   │   ├── entities/route.ts      # GET entities (rate limited, cached)
-│   │   │   └── call_service/route.ts  # POST service calls (validated)
+│   │   │   ├── call_service/route.ts  # POST service calls (validated)
+│   │   │   └── stream/route.ts        # SSE real-time updates (authenticated)
 │   │   ├── health/route.ts            # Health check endpoint
 │   │   └── metrics/route.ts           # Performance metrics
 │   ├── auth/
@@ -109,6 +111,7 @@ Visit [http://localhost:3000](http://localhost:3000)
 ├── lib/
 │   ├── supabaseBrowser.ts             # Client-side Supabase client
 │   ├── supabaseServer.ts              # Server-side Supabase client
+│   ├── ha-websocket.ts                # HA WebSocket client (server-side)
 │   ├── env.ts                         # Environment validation (server-only)
 │   ├── cache.ts                       # In-memory caching utility
 │   ├── rate-limit.ts                  # Rate limiting implementation
@@ -117,7 +120,8 @@ Visit [http://localhost:3000](http://localhost:3000)
 │   ├── icons.tsx                      # Entity domain icons
 │   └── constants.ts                   # App configuration
 ├── hooks/
-│   └── useEntities.ts                 # Entity fetching hook with cache
+│   ├── useEntities.ts                 # Entity fetching hook with cache
+│   └── useRealtimeEntities.ts         # Real-time SSE hook
 ├── types/
 │   └── home-assistant.ts              # TypeScript interfaces
 ├── tests/
