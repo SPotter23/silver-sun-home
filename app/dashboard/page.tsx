@@ -52,18 +52,16 @@ export default function DashboardPage() {
           {/* Rooms Grid */}
           <RoomsGrid />
 
-          {/* Pool/Spa Card */}
-          <PoolSpaCard
-            poolTemp={78}
-            spaTemp={99}
-            poolLightsOn={poolLights}
-            spaLightsOn={spaLights}
-            heaterMode={heaterMode}
-            onPoolLightsToggle={() => setPoolLights(!poolLights)}
-            onSpaLightsToggle={() => setSpaLights(!spaLights)}
-            onHeaterModeChange={setHeaterMode}
-            onBoost={handleBoost}
-          />
+          {/* Pool/Spa Card - Click to view details */}
+          <Link href="/pool">
+            <PoolSpaCard
+              poolTemp={78}
+              spaTemp={99}
+              poolLightsOn={poolLights}
+              spaLightsOn={spaLights}
+              heaterMode={heaterMode}
+            />
+          </Link>
 
           {/* Quick Controls */}
           <QuickControls />
