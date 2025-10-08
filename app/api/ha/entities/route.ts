@@ -3,12 +3,24 @@ import { HAEntity } from '@/types/home-assistant'
 import { env } from '@/lib/env'
 import { checkRateLimit, getRequestIdentifier } from '@/lib/rate-limit'
 import { RATE_LIMIT_WINDOW_MS, RATE_LIMIT_MAX_REQUESTS } from '@/lib/constants'
+import { supabaseServer } from '@/lib/supabaseServer'
 
 // Mark as dynamic route
 export const dynamic = 'force-dynamic'
 
 export async function GET(req: Request) {
   try {
+    // Authentication guard
+    const supabase = supabaseServer()
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+
+    if (authError || !user) {
+      return NextResponse.json(
+        { error: 'Unauthorized. Please sign in to access this endpoint.' },
+        { status: 401 }
+      )
+    }
+
     // Rate limiting
     const identifier = getRequestIdentifier(req)
     const rateLimitResult = checkRateLimit(identifier, {

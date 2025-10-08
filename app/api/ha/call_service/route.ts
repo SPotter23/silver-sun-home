@@ -9,12 +9,24 @@ import {
   isValidService,
   isValidServiceData,
 } from '@/lib/validation'
+import { supabaseServer } from '@/lib/supabaseServer'
 
 // Mark as dynamic route
 export const dynamic = 'force-dynamic'
 
 export async function POST(req: Request) {
   try {
+    // Authentication guard
+    const supabase = supabaseServer()
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+
+    if (authError || !user) {
+      return NextResponse.json(
+        { error: 'Unauthorized. Please sign in to access this endpoint.' },
+        { status: 401 }
+      )
+    }
+
     // Rate limiting (stricter for service calls)
     const identifier = getRequestIdentifier(req)
     const rateLimitResult = checkRateLimit(identifier, {
