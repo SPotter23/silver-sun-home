@@ -1,9 +1,32 @@
 import { NextResponse } from 'next/server'
 import { env } from '@/lib/env'
+import { checkRateLimit, getRequestIdentifier } from '@/lib/rate-limit'
 
 export const dynamic = 'force-dynamic'
 
-export async function GET() {
+export async function GET(req: Request) {
+  // Rate limiting to prevent health check abuse
+  const identifier = getRequestIdentifier(req)
+  const rateLimitResult = checkRateLimit(identifier, {
+    maxRequests: 10, // 10 requests per minute for health checks
+    windowMs: 60000,
+  })
+
+  if (!rateLimitResult.success) {
+    return NextResponse.json(
+      { error: 'Too many health check requests. Please try again later.' },
+      {
+        status: 429,
+        headers: {
+          'X-RateLimit-Limit': rateLimitResult.limit.toString(),
+          'X-RateLimit-Remaining': rateLimitResult.remaining.toString(),
+          'X-RateLimit-Reset': new Date(rateLimitResult.reset).toISOString(),
+          'Retry-After': Math.ceil((rateLimitResult.reset - Date.now()) / 1000).toString(),
+        },
+      }
+    )
+  }
+
   const startTime = Date.now()
   const checks = {
     timestamp: new Date().toISOString(),
@@ -71,6 +94,13 @@ export async function GET() {
       ...checks,
       responseTime,
     },
-    { status: statusCode }
+    {
+      status: statusCode,
+      headers: {
+        'X-RateLimit-Limit': rateLimitResult.limit.toString(),
+        'X-RateLimit-Remaining': rateLimitResult.remaining.toString(),
+        'X-RateLimit-Reset': new Date(rateLimitResult.reset).toISOString(),
+      },
+    }
   )
 }

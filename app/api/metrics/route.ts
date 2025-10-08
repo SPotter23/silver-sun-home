@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { supabaseServer } from '@/lib/supabaseServer'
 
 export const dynamic = 'force-dynamic'
 
@@ -15,6 +16,16 @@ const metrics = {
  * Get metrics endpoint
  */
 export async function GET() {
+  // Authentication guard
+  const supabase = supabaseServer()
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
+
+  if (authError || !user) {
+    return NextResponse.json(
+      { error: 'Unauthorized. Please sign in to access metrics.' },
+      { status: 401 }
+    )
+  }
   const uptime = Date.now() - metrics.lastReset
 
   const summary = {
@@ -54,6 +65,17 @@ export async function GET() {
  * Reset metrics endpoint
  */
 export async function DELETE() {
+  // Authentication guard
+  const supabase = supabaseServer()
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
+
+  if (authError || !user) {
+    return NextResponse.json(
+      { error: 'Unauthorized. Please sign in to reset metrics.' },
+      { status: 401 }
+    )
+  }
+
   metrics.apiCalls.entities = { count: 0, totalTime: 0, errors: 0 }
   metrics.apiCalls.serviceCall = { count: 0, totalTime: 0, errors: 0 }
   metrics.lastReset = Date.now()
